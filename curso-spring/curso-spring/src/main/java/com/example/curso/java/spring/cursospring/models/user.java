@@ -1,16 +1,23 @@
 package com.example.curso.java.spring.cursospring.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "user")
-public class user {
+public class user extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @JsonIgnore
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "nombre")
     private String nombre;
@@ -27,58 +34,33 @@ public class user {
     @Column(name = "fechaNacimiento")
     private Date fechaNacimiento;
 
-
     //Getters & Setters
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() {return nombre;}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public void setNombre(String nombre) {this.nombre = nombre;}
 
-    public String getApellido() {
-        return apellido;
-    }
+    public String getApellido() {return apellido;}
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+    public void setApellido(String apellido) {this.apellido = apellido;}
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() {return email;}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) {this.email = email;}
 
-    public String getTelefono() {
-        return telefono;
-    }
+    public String getTelefono() {return telefono;}
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+    public void setTelefono(String telefono) {this.telefono = telefono;}
 
-    public Long getid() {
-        return id;
-    }
+    public Date getFechaNacimiento() {return fechaNacimiento;}
 
-    public void setid(Long id) {
-        id = id;
-    }
+    public void setFechaNacimiento(Date fechaNacimiento) {this.fechaNacimiento = fechaNacimiento;}
 
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
+    public Role getRole() {return role;}
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
+    public void setRole(Role role) {this.role = role;}
 
-    //Metodo constructor
+    //Sobre carga de metodos
 
     public user()
     {}
@@ -89,7 +71,7 @@ public class user {
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
-        id = id;
+        setId(id);
         this.fechaNacimiento = fechaNacimiento;
     }
 }
