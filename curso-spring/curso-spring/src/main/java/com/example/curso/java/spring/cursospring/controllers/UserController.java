@@ -2,11 +2,14 @@ package com.example.curso.java.spring.cursospring.controllers;
 
 import com.example.curso.java.spring.cursospring.models.user;
 import com.example.curso.java.spring.cursospring.services.userService;
+import com.example.curso.java.spring.cursospring.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("user")
@@ -14,6 +17,9 @@ public class UserController {
 
     @Autowired
     userService userservice;
+
+    @Autowired
+    private JWTUtils jwtUtils;
 
     //Trae todos los usuarios
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -31,10 +37,7 @@ public class UserController {
 
     //Registrar un usuario
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    user setUser(@RequestBody user usuario)
-    {
-        return userservice.setUser(usuario);
-    }
+    void setUser(@RequestBody user usuario) {userservice.setUser(usuario);}
 
     //Actualizar un usuario
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -48,6 +51,23 @@ public class UserController {
     void deleteUser(@PathVariable Long id)
     {
         userservice.deleteUser(id);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    Map<String, Object> login(@RequestBody user dto)
+    {
+        user usuario = userService.login(dto);
+
+        Map<String, Object> result = new HashMap<>();
+        if (usuario != null)
+        {
+            String token = jwtUtils.create(String.valueOf(usuario.getId()), usuario.getEmail());
+            result.put("token", token);
+            result.put("usuario", usuario);
+        }
+
+        return result;
+
     }
 
 }

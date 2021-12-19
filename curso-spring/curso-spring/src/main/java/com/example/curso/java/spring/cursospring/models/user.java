@@ -2,63 +2,48 @@ package com.example.curso.java.spring.cursospring.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "user")
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
 public class user extends BaseEntity {
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
+    @Getter @Setter
     private Role role;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
+    @Getter @Setter
     private String password;
 
     @Column(name = "nombre")
+    @Getter @Setter
     private String nombre;
 
     @Column(name = "apellido")
+    @Getter @Setter
     private String apellido;
 
     @Column(name = "email")
+    @Getter @Setter
     private String email;
 
     @Column(name = "telefono")
+    @Getter @Setter
     private String telefono;
 
     @Column(name = "fechaNacimiento")
+    @Getter @Setter
     private Date fechaNacimiento;
-
-    //Getters & Setters
-
-    public String getNombre() {return nombre;}
-
-    public void setNombre(String nombre) {this.nombre = nombre;}
-
-    public String getApellido() {return apellido;}
-
-    public void setApellido(String apellido) {this.apellido = apellido;}
-
-    public String getEmail() {return email;}
-
-    public void setEmail(String email) {this.email = email;}
-
-    public String getTelefono() {return telefono;}
-
-    public void setTelefono(String telefono) {this.telefono = telefono;}
-
-    public Date getFechaNacimiento() {return fechaNacimiento;}
-
-    public void setFechaNacimiento(Date fechaNacimiento) {this.fechaNacimiento = fechaNacimiento;}
-
-    public Role getRole() {return role;}
-
-    public void setRole(Role role) {this.role = role;}
 
     //Sobre carga de metodos
 
